@@ -11,7 +11,8 @@
     <modules>
         <module>module2</module>
         <module>module3</module>
-        <module>module4</module>
+<!--        <module>module4</module>-->
+        <module>module5</module>
     </modules>
 
     <properties>
