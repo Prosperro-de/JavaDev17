@@ -28,11 +28,13 @@ public class CustomerDao {
             WHERE id = '%s';
                         """;
 
+    private DataSource dataSource = DataSource.getInstance();
+
 
 
     public List<Customer> getAll() throws SQLException {
         List<Customer> result = new ArrayList<>();
-        Connection connection = DataSource.getConnection();
+        Connection connection = dataSource.getConnection();
         try(Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(GET_ALL_CUSTOMERS_SQL);
             while (resultSet.next()) {
@@ -50,14 +52,14 @@ public class CustomerDao {
     }
 
     public void save() throws SQLException {
-        Connection connection = DataSource.getConnection();
+        Connection connection = dataSource.getConnection();
         try(Statement statement = connection.createStatement()) {
             statement.execute(CREATE_CUSTOMER_SQL);
         }
     }
 
     public void save(Customer customer) throws SQLException {
-        Connection connection = DataSource.getConnection();
+        Connection connection = dataSource.getConnection();
         String createSql = CREATE_CUSTOMER_SQL_TEMPLATE.formatted(
                         customer.getFirstName(),
                         customer.getLastName(),
@@ -73,7 +75,7 @@ public class CustomerDao {
     }
 
     public void update(Customer customer) throws SQLException {
-        Connection connection = DataSource.getConnection();
+        Connection connection = dataSource.getConnection();
         String createSql = UPDATE_CUSTOMER_SQL_TEMPLATE.formatted(
                 customer.getFirstName(),
                 customer.getLastName(),

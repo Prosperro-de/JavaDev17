@@ -17,9 +17,10 @@ public class CustomerDaoV2 {
     public static final String SELECT_CUSTOMER_BY_ID = """
             SELECT * FROM customers WHERE id = ?
             """;
+    private DataSource dataSource = DataSource.getInstance();
 
     public void save(Customer customer) throws SQLException {
-        Connection connection = DataSource.getConnection();
+        Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(CREATE_CUSTOMER_SQL_TEMPLATE,
                 PreparedStatement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, customer.getFirstName());
@@ -34,7 +35,7 @@ public class CustomerDaoV2 {
     }
 
     public Customer findById(Long id) throws SQLException {
-        Connection connection = DataSource.getConnection();
+        Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CUSTOMER_BY_ID);
         preparedStatement.setLong(1, id);
 
@@ -50,7 +51,7 @@ public class CustomerDaoV2 {
     }
 
     public void saveCustomers(List<Customer> customers) throws SQLException {
-        Connection connection = DataSource.getConnection();
+        Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_CUSTOMER_SQL_TEMPLATE,
