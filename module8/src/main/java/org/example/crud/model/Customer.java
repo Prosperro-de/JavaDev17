@@ -1,8 +1,10 @@
 package org.example.crud.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.example.crud.annotation.Column;
 import org.example.crud.annotation.Entity;
@@ -13,6 +15,8 @@ import org.example.crud.annotation.Table;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Setter
+@Builder
 @Entity
 @Table(value = "customers")
 public class Customer {
