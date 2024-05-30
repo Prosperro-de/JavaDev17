@@ -4,14 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
+import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DemoServer {
     private static ExecutorService pool;
     private static final String END_OF_MESSAGE_MARK = "\n";
+    private static final HttpDemoClient httpDemoClient = new HttpDemoClient();
 
     public static void main(String[] args) {
         final int MAX_CONNECTIONS = 100;
@@ -51,19 +55,22 @@ public class DemoServer {
                 OutputStream out = clientSocket.getOutputStream()) {
             String receivedMessage = in.readLine();
 
+            //TODO: parse path variable
+
             if (receivedMessage != null) {
                 System.out.println("Client request message: " + receivedMessage);
-                String htmlBody = getHtmlResponse();
+//                String htmlBody = getHtmlResponse();
+                byte[] imageByteArray = httpDemoClient.getImageByteArray("http.cat", "/200.jpg");
                 String httpResponse = "HTTP/1.1 200 OK" + END_OF_MESSAGE_MARK +
-                                      "Content-Type: text/html" + END_OF_MESSAGE_MARK +
-                                      "Content-Length: " + htmlBody.length() + END_OF_MESSAGE_MARK +
-                                      END_OF_MESSAGE_MARK +
-                                      htmlBody;
+                                      "Content-Type: image/jpeg" + END_OF_MESSAGE_MARK +
+                                      "Content-Length: " + imageByteArray.length + END_OF_MESSAGE_MARK +
+                                      END_OF_MESSAGE_MARK;
 
                 out.write(httpResponse.getBytes());
+                out.write(imageByteArray);
                 out.flush();
             }
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         } finally {
             try {
