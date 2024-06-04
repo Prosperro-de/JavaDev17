@@ -17,6 +17,7 @@
         <module>module7</module>
         <module>module8</module>
         <module>module9</module>
+        <module>module10</module>
     </modules>
 
     <properties>
