@@ -6,14 +6,64 @@
 </head>
 <body>
 <h1>Please enter your details</h1>
-<form action="details" method="post">
-    <label for="name">Name: </label>
-    <input type="text" id="name" name="name">
+
+<form id="customer-form">
+    <label for="firstName">Name: </label>
+    <input type="text" id="firstName" name="firstName">
     <br>
+    <br>
+
+    <label for="lastName">Last name: </label>
+    <input type="text" id="lastName" name="lastName">
+    <br>
+    <br>
+
     <label for="email">Email: </label>
     <input type="text" id="email" name="email">
     <br>
-    <input type="submit" value="Submit">
+    <br>
+
+    <label for="phoneNumber">Phone number: </label>
+    <input type="text" id="phoneNumber" name="phoneNumber">
+    <br>
+    <br>
+
+    <label for="postCode">Postal code: </label>
+    <input type="text" id="postCode" name="postCode">
+    <br>
+    <button type="button", id="submit-button">Submit</button>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('submit-button').addEventListener('click', function () {
+            const form = document.getElementById("customer-form");
+            const formData = new FormData(form);
+            const formObj = Object.fromEntries(formData);
+
+            const jsonData = JSON.stringify(formObj);
+
+            fetch('/customers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            });
+        });
+    });
+</script>
 </body>
 </html>
+
+
+<!--<h1>Please enter your details</h1>-->
+<!--<form action="details" method="post">-->
+<!--    <label for="name">Name: </label>-->
+<!--    <input type="text" id="name" name="name">-->
+<!--    <br>-->
+<!--    <label for="email">Email: </label>-->
+<!--    <input type="text" id="email" name="email">-->
+<!--    <br>-->
+<!--    <input type="submit" value="Submit">-->
+<!--</form>-->
