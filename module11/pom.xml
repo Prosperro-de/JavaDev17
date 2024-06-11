@@ -6,9 +6,9 @@
         <artifactId>Dev17</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>module10</artifactId>
+    <artifactId>module11</artifactId>
     <packaging>war</packaging>
-    <name>module10 Maven Webapp</name>
+    <name>module11 Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
@@ -17,10 +17,8 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
-
     </dependencies>
     <build>
-        <finalName>module10</finalName>
+        <finalName>module11</finalName>
     </build>
 </project>
