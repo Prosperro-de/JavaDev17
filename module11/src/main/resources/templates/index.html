@@ -15,6 +15,11 @@
       border-radius: 5px;
     }
 
+
+    .button:hover {
+      background-color: cornflowerblue;
+    }
+
     table {
       border: black 1px solid;
     }
@@ -82,12 +87,12 @@
 
 <div th:if="${action == 'showCustomer'}">
   <h2>Customer details</h2>
-  <p>Id: <span th:text="${customer.getId()}"></span></p></p>
-  <p>First name: <span th:text="${customer.getFirstName()}"></span></p></p>
-  <p>Last Name: <span th:text="${customer.getLastName()}"></span></p></p>
-  <p>Email: <span th:text="${customer.getEmail()}"></span></p></p>
-  <p>Phone number: <span th:text="${customer.getPhoneNumber()}"></span></p></p>
-  <p>Post code: <span th:text="${customer.getPostCode()}"></span></p></p>
+  <p>Id: <span th:text="${customer.getId()}"></span></p>
+  <p>First name: <span th:text="${customer.getFirstName()}"></span></p>
+  <p>Last Name: <span th:text="${customer.getLastName()}"></span></p>
+  <p>Email: <span th:text="${customer.getEmail()}"></span></p>
+  <p>Phone number: <span th:text="${customer.getPhoneNumber()}"></span></p>
+  <p>Post code: <span th:text="${customer.getPostCode()}"></span></p>
 </div>
 
 <div th:if="${action == 'findAll'}">
