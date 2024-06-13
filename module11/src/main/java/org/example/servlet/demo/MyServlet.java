@@ -6,38 +6,29 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.thymeleaf.*;
+import org.example.servlet.app.config.TemplateConfig;
+
 import org.thymeleaf.context.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "MyServlet", urlPatterns = {"/", "/storeUser"})
+//@WebServlet(name = "MyServlet", urlPatterns = {"/", "/storeUser"})
 public class MyServlet extends HttpServlet {
-
-    private TemplateEngine templateEngine;
+    private TemplateConfig templateConfig;
 
     @Override
-    public void init() {
-//        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(getServletContext());
-//        templateResolver.setPrefix("/WEB-INF/templates/");
-//        templateResolver.setSuffix(".html");
-//        templateEngine = new TemplateEngine();
-//        templateEngine.setTemplateResolver(templateResolver);
+    public void init() throws ServletException {
+        templateConfig = new TemplateConfig();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-//        HttpSession session = req.getSession(false);
-//        String username = (session != null) ? (String) session.getAttribute("username") : null;
-//
-//        WebContext context = new WebContext(req, resp, getServletContext(), req.getLocale());
-//        context.setVariable("username", username);
-//        templateEngine.process("index", context, resp.getWriter());
-        HttpSession session = req.getSession(true);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession(false);
         String username = (session != null) ? (String) session.getAttribute("username") : null;
-        req.setAttribute("username", username);
-        req.getRequestDispatcher("/index.html").forward(req, resp);
 
+        Context context = new Context();
+        context.setVariable("username", username);
+        templateConfig.process("indexDemo", context, resp);
     }
 
     @Override

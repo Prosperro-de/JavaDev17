@@ -56,7 +56,7 @@ public class GenericDao {
         }
     }
 
-    public  <T> void save(T object) throws SQLException {
+    public  <T> Long save(T object) throws SQLException {
         String insertQuery = SqlGenerator.createInsertQuery(object.getClass());
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery,
                 RETURN_GENERATED_KEYS)) {
@@ -64,13 +64,17 @@ public class GenericDao {
             setFieldValuesInPreparedStatement(preparedStatement, object);
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            Long id = null;
             while (generatedKeys.next()) {
                 Field idField = getIdField(object.getClass());
+                id = generatedKeys.getObject(1, Long.class);
                 idField.setAccessible(true);
-                idField.set(object, generatedKeys.getObject(1, Long.class));
+                idField.set(object, id);
                 idField.setAccessible(false);
             }
+
             connection.commit();
+            return id;
         } catch (Exception ex) {
             connection.rollback();
             throw new RuntimeException(ex);

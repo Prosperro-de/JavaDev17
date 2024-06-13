@@ -27,12 +27,17 @@ public class CustomerService {
     }
 
 
-    public void create(Map<String, String[]> params) throws Exception {
+    public Long create(Map<String, String[]> params) throws Exception {
         Customer customer = RequestToEntityMapper.mapToEntity(params, Customer.class);
         if (customer.getEmail().isEmpty()) {
             throw new BadRequestException();
         }
-        dao.save(customer);
+        return dao.save(customer);
+    }
+
+    public void delete(Long id) throws SQLException {
+        Customer byId = dao.findById(id, Customer.class);
+        dao.delete(byId);
     }
 
 //    public void create(BufferedReader payload) throws Exception {
