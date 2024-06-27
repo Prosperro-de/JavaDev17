@@ -17,19 +17,37 @@ public class Demo {
             Transaction transaction = session.beginTransaction();
 //            Customer customer = session.find(Customer.class, 1L);
 
-            Customer newCustomer = Customer.builder()
-                    .firstName("Hiber")
-                    .lastName("Nate")
-                    .email("redHat" + new Random().nextInt(10000) + "@mail.com")
-                    .phoneNumber(new Random().nextInt(100000) + "")
-                    .postCode("555-555")
-                    .build();
-            session.persist(newCustomer);
+//            Customer newCustomer = Customer.builder()
+//                    .firstName("Hiber")
+//                    .lastName("Nate")
+//                    .email("redHat" + new Random().nextInt(10000) + "@mail.com")
+//                    .phoneNumber(new Random().nextInt(100000) + "")
+//                    .postCode("555-555")
+//                    .build();
+//            session.persist(newCustomer);
+
+//            Customer customer = session.find(Customer.class, 49L);
+//
+//            System.out.println("customer = " + customer);
+//
+//            customer.setLastName("Spring3");
+//            session.detach(customer);
+//            session.merge(customer);
+
+//            Customer customer2 = session.find(Customer.class, 49L);
+//            System.out.println("customer2 = " + customer2);
+//
+//
+//            System.out.println("some another process");
 
             Customer customer = session.find(Customer.class, 49L);
             System.out.println("customer = " + customer);
-            customer.setLastName("Spring");
 
+            session.remove(customer);
+
+            session.persist(customer);
+
+            System.out.println("customer = " + customer);
 
             transaction.commit();
         }

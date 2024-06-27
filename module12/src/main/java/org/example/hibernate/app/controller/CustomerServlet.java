@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/", "/createCustomerForm", "/findCustomerByIdForm", "/findAllCustomers",
-        "/createCustomer", "/findById", "/deleteCustomerByIdForm", "/deleteById"})
+        "/createCustomer", "/findById", "/deleteCustomerByIdForm", "/deleteById", "/findCustomerByEmailForm"})
 public class CustomerServlet extends HttpServlet {
     private TemplateConfig templateConfig = new TemplateConfig();
     private CustomerService customerService = new CustomerService();
@@ -37,6 +37,10 @@ public class CustomerServlet extends HttpServlet {
                 context.setVariable("action", "findById");
                 templateConfig.process("index", context, resp);
             }
+            case "/findCustomerByEmailForm" -> {
+                context.setVariable("action", "findByEmail");
+                templateConfig.process("index", context, resp);
+            }
             case "/deleteCustomerByIdForm" -> {
                 context.setVariable("action", "delete");
                 templateConfig.process("index", context, resp);
@@ -48,10 +52,21 @@ public class CustomerServlet extends HttpServlet {
                 context.setVariable("customer", customer);
                 templateConfig.process("index", context, resp);
             }
+            case "/findByEmail" -> {
+                String email = req.getParameter("email");
+                Customer customer = customerService.findByEmail(email);
+                context.setVariable("action", "showCustomer");
+                context.setVariable("customer", customer);
+                templateConfig.process("index", context, resp);
+            }
             case "/findAllCustomers" -> {
-                List<Customer> allCustomers = customerService.findAll();
+                Integer max = parseIntOrDefault(req.getParameter("max"));
+                Integer offset = parseIntOrDefault(req.getParameter("offset"));
+                List<Customer> allCustomers = customerService.findAll(max, offset);
                 context.setVariable("action", "findAll");
                 context.setVariable("customers", allCustomers);
+                context.setVariable("max", max);
+                context.setVariable("offset", offset);
                 templateConfig.process("index", context, resp);
             }
             case "/deleteById" -> {
@@ -63,8 +78,15 @@ public class CustomerServlet extends HttpServlet {
                     throw new RuntimeException(e);
                 }
             }
-
             default -> templateConfig.process("index", context, resp);
+        }
+    }
+
+    private int parseIntOrDefault(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception ex) {
+            return 0;
         }
     }
 

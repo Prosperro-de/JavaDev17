@@ -32,5 +32,4 @@ public class Customer {
     private String phoneNumber;
     @Column(name = "post_code")
     private String postCode;
-
 }
