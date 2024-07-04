@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.example.hibernate.app.dao.config.HibernateUtil;
 import org.example.hibernate.app.dao.model.Customer;
+import org.example.hibernate.app.dao.model.Order;
 import org.example.hibernate.app.dao.model.projection.CustomerProjection;
 import org.example.hibernate.app.exception.BadRequestException;
 import org.example.hibernate.app.util.RequestToEntityMapper;
@@ -31,7 +32,20 @@ public class CustomerDao {
 
     public Customer findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.find(Customer.class, id);
+            var customer = session.find(Customer.class, id);
+//            customer.getOrders().forEach(System.out::println);
+//            customer.getOrders().forEach(System.out::println);
+            return customer;
+        }
+    }
+
+    public void saveOrderForCustomer(Long id, Order order) {
+        try (Session session = sessionFactory.openSession()) {
+
+            var customer = session.find(Customer.class, id);
+
+            customer.addOrder(order);
+            session.persist(order);
         }
     }
 
@@ -94,10 +108,18 @@ public class CustomerDao {
 
     public List<Customer> findAll(Integer max, Integer offset) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Customer> fromCustomer = session.createQuery("FROM Customer", Customer.class);
+//            Query<Customer> fromCustomer = session.createQuery("FROM Customer", Customer.class);
+            Query<Customer> fromCustomer = session.createQuery(
+                    "SELECT c FROM Customer c LEFT JOIN FETCH c.orders " +
+                    "LEFT JOIN c.customerDetails",
+                    Customer.class);
+
             fromCustomer.setFirstResult(offset);
             fromCustomer.setMaxResults(max);
-            return fromCustomer.list();
+
+            var result =  fromCustomer.list();
+            result.forEach(System.out::println);
+            return result;
         }
     }
 
