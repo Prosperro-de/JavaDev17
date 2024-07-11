@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Management</title>
+  <style>
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px;
+      text-align: center;
+      text-decoration: none;
+      background-color: dodgerblue;
+      color: white;
+      border-radius: 5px;
+    }
+
+
+    .button:hover {
+      background-color: cornflowerblue;
+    }
+
+    table {
+      border: black 1px solid;
+    }
+
+  </style>
+</head>
+<body>
+<h1>Customer Management System</h1>
+
+<a class="button" href="/createCustomerForm">Create customer</a>
+<a class="button" href="/findCustomerByIdForm">Find customer by Id</a>
+<a class="button" href="/findCustomerByEmailForm">Find customer by Email</a>
+<a class="button" href="/findAllCustomers">Find all customers</a>
+<a class="button" href="/deleteCustomerByIdForm">Delete customer by Id</a>
+
+<div th:if="${action == 'create'}">
+  <form action="/createCustomer" method="post">
+    <label for="firstName">Name: </label>
+    <input type="text" id="firstName" name="firstName">
+    <br>
+    <br>
+
+    <label for="lastName">Last name: </label>
+    <input type="text" id="lastName" name="lastName">
+    <br>
+    <br>
+
+    <label for="email">Email: </label>
+    <input type="email" id="email" name="email">
+    <br>
+    <br>
+
+    <label for="phoneNumber">Phone number: </label>
+    <input type="text" id="phoneNumber" name="phoneNumber">
+    <br>
+    <br>
+
+    <label for="postCode">Postal code: </label>
+    <input type="text" id="postCode" name="postCode">
+    <br>
+    <br>
+    <input type="submit" value="Create">
+  </form>
+</div>
+
+<div th:if="${action == 'findById'}">
+  <form action="/findById" method="get">
+    <label for="id">Id: </label>
+    <input type="text" id="id" name="id">
+    <input type="submit" value="Find">
+  </form>
+</div>
+
+<div th:if="${action == 'findByEmail'}">
+  <form action="/findByEmail" method="get">
+    <label for="customerEmail">Email: </label>
+    <input type="text" id="customerEmail" name="email">
+    <input type="submit" value="Find">
+  </form>
+</div>
+
+
+<div th:if="${action == 'delete'}">
+  <form action="/deleteById" method="get">
+    <label for="deleteId">Id: </label>
+    <input type="text" id="deleteId" name="id">
+    <input type="submit" value="Find">
+  </form>
+</div>
+
+<div th:if="${action == 'showCustomerId'}">
+  <h2>Created customer</h2>
+  <p>Id: <span th:text="${customerId}"></span></p>
+</div>
+
+<div th:if="${action == 'showCustomer'}">
+  <h2>Customer details</h2>
+  <p>Id: <span th:text="${customer.getId()}"></span></p>
+  <p>First name: <span th:text="${customer.getFirstName()}"></span></p>
+  <p>Last Name: <span th:text="${customer.getLastName()}"></span></p>
+  <p>Email: <span th:text="${customer.getEmail()}"></span></p>
+  <p>Phone number: <span th:text="${customer.getPhoneNumber()}"></span></p>
+  <p>Post code: <span th:text="${customer.getPostCode()}"></span></p>
+</div>
+
+<div th:if="${action == 'findAll'}">
+  <h2>All customers</h2>
+
+  <form method="get" action="/findAllCustomers">
+    <label for="customerPerPage">Customers per page</label>
+    <select name="max" id="customerPerPage" onchange="this.form.submit()">
+      <option th:value="5" th:text="5" th:selected="${max == 5}"></option>
+      <option th:value="10" th:text="10" th:selected="${max == 10}"></option>
+      <option th:value="15" th:text="15" th:selected="${max == 15}"></option>
+    </select>
+    <input type="hidden" name="offset" th:value="${offset}">
+    <br>
+    <br>
+  </form>
+
+
+
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th>Phone number</th>
+      <th>Post code</th>
+    </tr>
+    <tr th:each="customer : ${customers}">
+      <td th:text="${customer.id}"></td>
+      <td th:text="${customer.firstName}"></td>
+      <td th:text="${customer.lastName}"></td>
+      <td th:text="${customer.email}"></td>
+      <td th:text="${customer.phoneNumber}"></td>
+      <td th:text="${customer.postCode}"></td>
+    </tr>
+  </table>
+</div>
+
+
+
+</body>
+</html>
