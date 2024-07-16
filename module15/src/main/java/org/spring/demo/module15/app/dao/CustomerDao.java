@@ -1,4 +1,4 @@
-package org.spring.demo.module14.app.dao;
+package org.spring.demo.module15.app.dao;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -9,9 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.spring.demo.module14.app.dao.model.Customer;
-import org.spring.demo.module14.app.dao.model.Order;
-import org.spring.demo.module14.app.exception.BadRequestException;
+import org.spring.demo.module15.app.dao.model.Customer;
+import org.spring.demo.module15.app.dao.model.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
