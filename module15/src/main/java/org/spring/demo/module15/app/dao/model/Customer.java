@@ -22,6 +22,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,5 +67,13 @@ public class Customer {
         order.setCustomer(this);
         orders.add(order);
         String s = "";
+    }
+
+    public LocalDate getDateOfBirth() {
+        return customerDetails != null ? customerDetails.getDateOfBirth() : null;
+    }
+
+    public Integer getLoyaltyPoints() {
+        return customerDetails != null ? customerDetails.getLoyaltyPoints() : null;
     }
 }

@@ -3,7 +3,9 @@ package org.spring.demo.module15.app.service;
 import lombok.RequiredArgsConstructor;
 import org.spring.demo.module15.app.dao.CustomerDao;
 import org.spring.demo.module15.app.dao.model.Customer;
+import org.spring.demo.module15.app.dao.model.dto.CustomerResponse;
 import org.spring.demo.module15.app.exception.BadRequestException;
+import org.spring.demo.module15.app.util.mapper.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,18 +19,21 @@ public class CustomerService {
 
     private final CustomerDao customerDao;
     private final RestTemplate client;
+    private final CustomerMapper customerMapper;
     private int timeout;
 
     public CustomerService(@Qualifier(value = "paymentClient") RestTemplate client,
-                           CustomerDao customerDao,
+                           CustomerDao customerDao, CustomerMapper customerMapper,
                            @Value("${timeout}") int timeout) {
         this.client = client;
         this.customerDao = customerDao;
+        this.customerMapper = customerMapper;
         this.timeout = timeout;
     }
 
-    public Customer getById(Long id) {
-        return customerDao.findById(id).orElseThrow(BadRequestException::new);
+    public CustomerResponse getById(Long id) {
+//        return CustomerMapper.toDto(customerDao.findById(id).orElseThrow(BadRequestException::new));
+        return customerMapper.toCustomerResponse(customerDao.findById(id).orElseThrow(BadRequestException::new));
     }
 
     public Customer getByEmail(String email) {
