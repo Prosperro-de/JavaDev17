@@ -61,19 +61,12 @@ public class Customer {
     private CustomerDetails customerDetails;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
 
     public void addOrder(Order order) {
         order.setCustomer(this);
         orders.add(order);
         String s = "";
-    }
-
-    public LocalDate getDateOfBirth() {
-        return customerDetails != null ? customerDetails.getDateOfBirth() : null;
-    }
-
-    public Integer getLoyaltyPoints() {
-        return customerDetails != null ? customerDetails.getLoyaltyPoints() : null;
     }
 }

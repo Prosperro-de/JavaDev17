@@ -33,7 +33,10 @@ public class CustomerService {
 
     public CustomerResponse getById(Long id) {
 //        return CustomerMapper.toDto(customerDao.findById(id).orElseThrow(BadRequestException::new));
-        return customerMapper.toCustomerResponse(customerDao.findById(id).orElseThrow(BadRequestException::new));
+        return customerMapper.toCustomerResponse(
+                customerDao.findById(id)
+                        .orElseThrow(BadRequestException::new)
+        );
     }
 
     public Customer getByEmail(String email) {
