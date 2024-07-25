@@ -1,17 +1,30 @@
 package org.example.module16.app.service;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.example.module16.app.model.Customer;
 import org.example.module16.app.model.dto.CustomerResponse;
 import org.example.module16.app.exception.BadRequestException;
 import org.example.module16.app.model.dto.request.CustomerUpdateRequest;
 import org.example.module16.app.repository.CustomerRepository;
 import org.example.module16.app.mapper.CustomerMapper;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -49,12 +62,19 @@ public class CustomerService {
                 .forEach(System.out::println);
     }
 
+
     public void deleteById(Long id) {
         customerRepository.deleteById(id);
     }
 
-    public List<Customer> findAll() {
-        return customerRepository.findAll();
+    @Transactional(readOnly = true)
+    @EventListener(ApplicationReadyEvent.class)
+    public void smth() {
+        customerRepository.findAllOrderById(1L).forEach(System.out::println);
+    }
+
+    public Page<Customer> findAll(Pageable pageable) {
+        return customerRepository.findAll(pageable);
     }
 
     public Customer create(Customer customer) {
@@ -76,5 +96,13 @@ public class CustomerService {
 //        restTemplate.pos
     }
 
+    public List<Customer> getCustomersByFirstName(String firstName) {
+        return customerRepository.findAll(getCustomerByFirstName(firstName));
+    }
 
+    private Specification<Customer> getCustomerByFirstName(String firstName) {
+        return (root, query, builder) -> Optional.ofNullable(firstName)
+                .map(name -> builder.equal(root.get("firstName"), firstName))
+                .orElseGet(builder::conjunction);
+    }
 }

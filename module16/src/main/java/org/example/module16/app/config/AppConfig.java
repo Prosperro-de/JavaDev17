@@ -1,13 +1,6 @@
 package org.example.module16.app.config;
 
 
-import org.hibernate.SessionFactory;
-import org.example.module16.app.model.Customer;
-import org.example.module16.app.model.Category;
-import org.example.module16.app.model.CustomerDetails;
-import org.example.module16.app.model.Order;
-import org.example.module16.app.model.OrderItem;
-import org.example.module16.app.model.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

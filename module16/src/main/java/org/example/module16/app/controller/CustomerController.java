@@ -5,6 +5,9 @@ import org.example.module16.app.model.Customer;
 import org.example.module16.app.model.dto.CustomerResponse;
 import org.example.module16.app.model.dto.request.CustomerUpdateRequest;
 import org.example.module16.app.service.CustomerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +65,14 @@ public class CustomerController {
     }
 
     @GetMapping("/findAll")
-    public List<Customer> findAll() {
-        return customerService.findAll();
+    public Page<Customer> findAll(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerService.findAll(pageable);
+    }
+
+    @GetMapping("/findAll/{name}")
+    public List<Customer> findAllByName(@PathVariable String name) {
+        return customerService.getCustomersByFirstName(name);
     }
 }
