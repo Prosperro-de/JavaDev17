@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS customers
     first_name VARCHAR(255),
     last_name  VARCHAR(255) NOT NULL,
     email      VARCHAR(50) UNIQUE,
-    customer_password VARCHAR(255),
     tel_number VARCHAR(50),
     post_code  VARCHAR(10),
     CONSTRAINT pk_customers_id PRIMARY KEY (id)

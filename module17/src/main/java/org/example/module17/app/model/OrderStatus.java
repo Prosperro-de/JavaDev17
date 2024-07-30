@@ -1,4 +1,4 @@
-package org.example.module17.app.model.projection;
+package org.example.module17.app.model;
 
 public enum OrderStatus {
     COMPLETED,

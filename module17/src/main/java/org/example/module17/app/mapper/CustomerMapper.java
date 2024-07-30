@@ -16,4 +16,5 @@ public interface CustomerMapper {
     CustomerResponse toCustomerResponse(Customer customer);
 
     Customer toEntity(CustomerUpdateRequest request);
+
 }

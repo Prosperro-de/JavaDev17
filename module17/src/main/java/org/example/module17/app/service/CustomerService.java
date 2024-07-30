@@ -6,27 +6,23 @@ import org.example.module17.app.exception.BadRequestException;
 import org.example.module17.app.model.dto.request.CustomerUpdateRequest;
 import org.example.module17.app.repository.CustomerRepository;
 import org.example.module17.app.mapper.CustomerMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class CustomerService {
-
-    private final RestTemplate client;
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
-    public CustomerService(@Qualifier(value = "paymentClient") RestTemplate client, CustomerRepository customerRepository,
+    public CustomerService(CustomerRepository customerRepository,
                            CustomerMapper customerMapper) {
-        this.client = client;
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
@@ -64,10 +60,6 @@ public class CustomerService {
         customer.setPhoneNumber(request.getPhoneNumber());
         customer.setPostCode(request.getPostCode());
         return customerMapper.toCustomerResponse(customer);
-    }
-
-    public void placeOrder() {
-//        restTemplate.pos
     }
 
     public List<Customer> getCustomersByFirstName(String firstName) {
