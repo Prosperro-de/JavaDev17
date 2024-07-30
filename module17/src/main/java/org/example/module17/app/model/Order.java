@@ -19,7 +19,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.example.module17.app.model.projection.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
