@@ -1,17 +1,23 @@
 package org.example.module17.app.controller;
 
-import jakarta.servlet.ServletContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.example.module17.app.model.dto.request.AuthRequest;
+import org.example.module17.app.service.CustomerService;
+import org.example.module17.app.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
 @RestController
-public class AuthDemoController {
+@RequiredArgsConstructor
+public class AuthController {
+    private final UserService userService;
 
     ThreadLocal<String> threadLocal = new ThreadLocal<>();
 
@@ -24,5 +30,10 @@ public class AuthDemoController {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         return authentication.getName();
+    }
+
+    @PostMapping("/signup")
+    public String signup(@RequestBody AuthRequest authRequest) {
+        return userService.createUser(authRequest);
     }
 }
