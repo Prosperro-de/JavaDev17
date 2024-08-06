@@ -3,9 +3,8 @@ package org.example.module18.app.service;
 import lombok.RequiredArgsConstructor;
 import org.example.module18.app.model.Customer;
 import org.example.module18.app.model.CustomerDetails;
-import org.example.module18.app.model.Role;
 import org.example.module18.app.model.User;
-import org.example.module18.app.model.dto.request.AuthRequest;
+import org.example.module18.app.model.dto.request.SignupRequest;
 import org.example.module18.app.repository.RoleRepository;
 import org.example.module18.app.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +21,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public String createUser(AuthRequest request) {
+    public String createUser(SignupRequest request) {
         if (userRepository.existsByUsername(request.getEmail())) {
             return "User with username: %s already exists".formatted(request.getEmail());
         }
